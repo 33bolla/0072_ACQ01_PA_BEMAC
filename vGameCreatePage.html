@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    
+    <!-- bootstrap and JQ_UI decorative library -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    
+   
+    <!-- css in external file -->
+    <?!= include ('vPage-css'); ?>
+    
+    <!-- multipage management: setting url for e.parameter obj -->
+    <?var url = getScriptUrl();?>
+  </head>
+  <body>
+    <h1 class="style1">  NEW FOLDER GAME FORM PAGE   </h1> 
+    <div></div>
+    
+    <!-- page control-->
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <a class="btn btn-primary style2" id='btnBack' href='<?=url?>?page=index' target="_top" role="button">Torna Alla pagina principale</a>
+        </div>
+        <div class="col-sm">  
+        </div>
+        <div class="col-sm">
+          <button type="button" class="btn btn-success" id="btnConferma">Conferma Dati Inseriti</button>
+        </div>
+      </div>
+    </div><!-- end container-->
+    <hr>
+        <!-- form creaziobe record  area  (da ricreare con template comune)-->  
+        <div class="container">
+          <form>      
+              <div class="form-row">
+                  <div class="form-group col-md-6">
+                      <label for="idGame">Numero Game</label>
+                      <input type="text" class="form-control" id="idGame" placeholder="Numero Game">
+                  </div>
+            
+                  <div class="form-group col-md-6">
+                      <label for="nomeBreveGame">Nome Breve</label>
+                      <input type="text" class="form-control" id="nomeBreveGame" placeholder="Nome Breve" Game>
+                  </div>      
+              </div><!--end form row-->
+  
+              <div class="form-row">
+                  <div class="form-group col-md-6">
+                      <label for="oggettoGame">Oggetto</label>
+                      <input type="text" class="form-control" id="oggettoGame" placeholder="Oggetto">
+                  </div>
+          
+                  <div class="form-group col-md-6">
+                      <label for="noteGame">Note</label>
+                      <textarea class="form-control" id="noteGame" placeholder="Note" rows="3"></textarea>
+                  </div>
+              </div><!--end form row-->
+  
+              <div class="form-row">
+                  <div class="form-group col-md-6">
+                      <label for="clienteGame">clienteGame</label>
+                      <input type="text" class="form-control" id="clienteGame" placeholder="cliente">
+                  </div>
+  
+                  <div class="form-group col-md-6">
+                      <label for="statoGame">Stato</label>
+                      <select id="statoGame" name="statoGame" placeholder="seleziona">
+                          <option value="0">Attiva</option>
+                          <option value="1">StandBy</option>
+                          <option value="2">Terminata</option>
+                          <option value="3">Archiviata</option>
+                      </select>  
+                  </div>
+  
+                
+              </div><!--end form row-->
+          </form>
+        </div><!-- end container--> 
+    
+    <!-- test area -->
+    <div id='output'> 
+      area di output<br />   
+    </div>
+    
+    <!-- jsSection-->
+    
+    <script src="https://code.jquery.com/jquery-3.4.0.js" integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>    
+    
+    <!-- App Front End JS Library-->
+  <?!= include ('feLibrary');?> 
+  <?!= include ('feAppLogic');?> 
+
+<script>
+console.log('in crea Game Page');
+
+$(document).ready(function(){
+  $("#btnConferma").click(function(){
+    //init,  test & acquisizione dati in input
+    alert('hai confermato i dati. Procedo alla creazione del Game sul Folder e sul database');
+    console.log('lista dati inseriti');
+    let idGame=$("#idGame").val();
+    let nomeBreveGame=$("#nomeBreveGame").val();
+    let oggettoGame=$("#oggettoGame").val();
+    let noteGame=$("#noteGame").val();
+    let clienteGame=$("#clienteGame").val();
+    let statoGame=$("#statoGame").val();
+    
+    let gameValues=[idGame, nomeBreveGame,oggettoGame,noteGame,clienteGame,statoGame];
+    
+    console.log('dati del game da creare: '+gameValues);
+    
+    //lancia la funzione feAppLogic che gestisce la creazione del record e del folder
+    //la funzione ritorna un messaggio all'utente
+    
+    gameCreate(gameValues);
+    /*Nota developer: cosa fa la funzione gameCreate
+    //lancia con i parametri corretti la funzione beAppLogic che, con due distinte chiamate
+    a funzioni server provvede a:
+    //creare  record su database
+    //creare folder (con caricamento template)sul Drive
+    //la call back function ritorna un messaggio x user
+    */
+    
+    
+    //--------------old stuff----------
+    // //values init
+    // let dbValues=['cmaTec','games',gameValues];
+    // let folderValues=[idGame, nomeBreveGame];
+    
+    //chiama la funzione custom in BE che chiama CRUD 
+    // google.script.run.withSuccessHandler(onSuccess)
+    //     .gsCreateRecord(dbValues,folderValues)
+        
+    //     //.gsCreateRecord('cmaTec', 'games', gameValues);
+    
+    //     //callback function
+    //     function onSuccess(dataSet) {      
+    //         //test & init          
+    //         console.log('questo è il valore ritornato dal BE:  '+dataSet); 
+    //         alert( 'tutto OK creazione record eseguita con successo!');
+    //     }
+
+    // //chiama la funzione custom in feAppLogic, che invia il messaggio di ok su questa pagina
+    // folderGameCreate(idGame, nomeBreveGame);   
+  });
+});
+
+
+$( "#btnBack" ).click(function() {
+  // not used
+  
+});
+
+
+/*developer notes:
+
+toDo
+
+Done
+# solo acquisizione dati in input e lancio feAppLogic function correlata
+
+
+*/
+</script>
+</body>
+</html>
+
+

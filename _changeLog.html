@@ -1,0 +1,156 @@
+*************
+*0072_ACQ01_PA_BEMAC    
+*Automating your work step bystep
+*starting date 20200816        
+**************
+
+
+*********** maoSoft() Conventions for sotware development********
+@@ All  modules (files):
+# start with the list of implemented functions with short notes:
+# each functions start with developer help  (as in jsDoc)
+# each functions ends with 
+    //suggested needed improvement
+    //real major functions changeLog (especially if it is a library function)
+# each file ends with suggested improvement (developer notes)
+---- see feLibrary and beAppLogic as template
+
+@@la architettura MVC è stata customizzata secondo i modelli architetturali maosoft
+# V: ui Pages
+# C: Front End-> feAppLogic (specifiche per la applicazione); feLibrary (standard maoSoft())
+# C: Back  End-> beAppLogic (specifiche per la applicazione); beAppLogic e beDriveManager  (standard maoSoft())
+# M: tabelle data base, files gDrive, DropBox, dBase e app esterne(API)
+
+Nb: le librerie di funzioni di BE sono specifiche per ogni servizio o Classe utilizzata
+Es beDriveManager, beDbaseCRUD, beDbaseManager ecc.
+
+@@ le funzioni di libreria  FE sono spesso coniugate con una funzione di BE (che implementa lato server la funzione).
+Hanno lo stesso nome ma in BE il nome è preceduto dal prefisso gs
+****************************************************************
+
+
+
+@@@@@@@@Specs@@@@@@@
+***R01.001
+@@Basic Frameworks
+##using clasp for local edit on mcBook ***
+
+#design database PA, PR Fornitori ***
+
+#create basic UI WebPage Bemac maoSoft() App Style ***
+// sections: PA, Fornitori, BPM ***
+#buttons fo launching pages ***
+
+-launching gDrive folder ( PA, PR, BPM, Fornitori, Subappaltatori)*** 
+
+@Automation-----
+
+#Automazione e Assistenza  
+-(gSheet Fornitori, gSheet Subappaltatori)
+-assistenza password
+#carica progetto su gitHub + versione GAS***
+
+
+******************
+***R01.002
+@Automation:
+-(Nuovo PA, Nuovo PR)---
+- feLibrary con funzioni coniugate con funzioni server di libreria ***
+    //folderCreate.html (feLibrary.html)<-> folderCreate.gs (gDriveManager.gs) ***
+- assistenza password (da dbase maosoft) ---
+    //uso e miglioramento (completamento) della classe CRUD**
+    //beApplogic: caller function gsArrayReadTable**
+    //test per esecuzione qry su tabella password**
+    //target table su vPasswordPage per visualizzare tabella password***
+    //setta datatable per visualizzazione su target table del risultato della query***
+        //devi usare js2dArray (già presente in crud)****
+    //test  uso di datatable per ricerca rapida password***
+
+- creazione folder con caricamento template (no database) ***    
+    //folder parent games ***
+    //gSheet templates controlloProcesso  PA e PR ***
+# carica progetto su gitHub + versione GAS ***
+
+#REL 0.2
+@Automation: Gestione Smart progetti gestiti da Maurizio ---
+ 
+R02.001---
+#crea user Interface per automazione---
+    //crea pagina visualizzazione lista games***
+    
+#attivazione tabella su database ***
+    //crea modifica tabella games**
+    //popola la tabella con alcuni record ***
+    //crea qry e architettura come per visualizzazione pwd ***
+        //generalizzare la funzione gsArrayReadTable(qry) in beAppLogic per
+          usarla con database definiti al run time *** Major Step
+        //test di uso su password***
+        //test di uso su games ***
+#creazione pagina di visualizzazione game***
+
+R02.002
+#attiva visualizzazione folder per Games, servizio commerciale, BPM***
+#attiva visualizzazione folder servizio AMM***
+
+#creazione pagina di update---
+    //UI per update**
+    //datatable riconosce id del record selezionato*** to deep in but OK!! 
+    //lo registra su session.storage***
+    //update page mostra i dati del record selezionato***
+    //btn per conferma dati modificati crea qry di update e invia a beAppLogic***
+    //attiva metodo update nella classe CRUD***
+    
+#ridurre i log lato server e client***
+
+R02.003    
+#miglioramento pagina di creazione game *** major step dbase + gdrive togheter!!!!
+    //query creazione game su  database ***
+    //gestione errori database *** (da migliorare)
+    //messaggio di ok***
+
+
+
+**************
+R02.004   
+#revisione work flow creazione game ****
+
+#miglioramento pagina di update ----
+    //bottone per tornare alla pagina precedente (lista game) ***
+    //pulsanti per attivazione funzioni speciali:
+        //apri folder games ***
+        //apri file controllo processo **** 
+**************       
+
+#REL03.001
+Gestione Smart Offerte (secondo quanto visto per i Games)
+
+
+#REL03.002
+Gestione Smart Gare
+
+#REL04
+#miglioramento pagina di update games 
+//visualizza log gestioneProcesso ---
+        //crea log  per gestioneProcesso
+        //registra mail in docIn docOut
+        //altri dettagli del game
+        //upload file con descrizione e classificazione del file 
+        //incluso registrazione del file in cartelle predefinite con check button
+#impostazione documentazione creazione game secondo specifiche maosoft--- 
+
+#REL05
+Crea e accede a DropBox
+
+
+
+#REL05
+Gestione template CMA (su local)
+    //attiva collegamento diretto a database CMA e tira su i dati di interesse
+    //attiva upload di file da WS MM
+
+
+toDo
+#togliere disclaimer google
+#clasp su mc Bemac
+#clasp su winCMA
+#classe game con metodi per database e gDrivße!!

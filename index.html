@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    
+    <!-- bootstrap and JQ_UI decorative library -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    
+    <!-- css in external file -->
+    <?!= include ('vPage-css'); ?>
+    
+    <!-- multipage management: setting url for e.parameter obj -->
+    <?var url = getScriptUrl();?>
+</head>
+  
+<body>
+   
+  <!-- header  -->
+  <?!= include ('vHeader'); ?>
+  
+  
+  <!-- main menu -->
+  <div class="row">
+    <div class="col-md-4"> 
+      <p class='style1'>PA Processi Acquisto</p>
+      <button class="btn btn-primary" type="button" id="btnFolderPa">
+        PA Folder
+      </button> <br>
+      <button class="btn-primary" type="button" id="btnFolderPr">
+        PR Folder
+      </button><br>
+      <hr>
+       
+      
+    </div><!--md4-->
+        
+    <div class="col-md-4">
+        <p class='style1'> GESTIONE FORNITORI</p>
+        <button class="btn btn-secondary" type="button" id="btnFolderFornitori">
+         FORNITORI FOLDER
+        </button> <br>
+        <button class="btn btn-secondary" type="button" id="btnFattureFornitori">
+          FATTURE FORNITORI FOLDER
+        </button> <br>
+        <hr>
+        <button class="btn btn-secondary" type="button" id="btnListaFornitori">
+          FORNITORI gSheet
+        </button> <br>
+        <button class="btn btn-secondary" type="button" id="btnListaSubappaltatori">
+          SUBAPPALTATORI gSheet
+        </button> <br>
+        
+    </div><!--md4-->
+    
+    <div class="col-md-4">
+        <p class='style1'> PROCEDURE E RIFERIMENTI </p>
+        <button class="btn btn-success" type="button" id="btnStoAcq01">
+          ACQ01 GESTIONE PROCESSI DI ACQUISTO
+        </button> <br>
+        <button class="btn-success" type="button" id="btnStoAcq02">
+          ACQ02 CONTROLLO FATTURE
+        </button> <br>
+        <button class="btn-success" type="button" id="btnStoAcq03">
+          ACQ03 GESTIONE CATALOGHI E DOCUMENTAZIONE TECNICA
+        </button> <br>
+        <button class="btn-success" type="button" id="btnPortaliFornitori">
+          PortaliFornitori
+        </button> <br>
+        <hr>
+        <button class="btn-success" type="button" id="btnListinoAcquistoBemac">
+         Listino Acquisto Bemac
+        </button> <br>
+        
+    </div><!--md4-->
+  </div> <!-- ROW-->
+  <hr>
+  <div class="row">
+    <div class="col-md-12">
+      <p class='style1'> Assistente ACQ</p>
+    </div>
+  </div> <!-- ROW-->
+  
+  <div class="row">
+    <div class="col-md-4">
+        <button class="btn btn-secondary" type="button" id="btnNuovoPa">
+          Nuovo PA
+        </button> <br>
+        <button class="btn btn-secondary" type="button" id="btnNuovoPr">
+          Nuovo PR
+        </button> <br>
+        <hr>
+        <button class="btn btn-secondary" type="button" id="btnListaPa">
+         Lista PA
+        </button> <br>
+        <button class="btn btn-secondary" type="button" id="btnListaPr">
+          Lista PR
+         </button> <br>
+    </div>
+    
+    <div class="col-md-4">
+        <button class="btn btn-secondary" type="button" id="btnNuovoFornitore">
+          Nuovo Fornitore
+        </button> <br>
+        <button class="btn btn-secondary" type="button" id="btnNuovoSubAppaltatore">
+          Nuovo SubAppaltatore
+        </button> <br>
+        <hr>
+        <button class="btn btn-secondary" type="button" id="btnNuovoPortale">
+          Nuovo Portale
+        </button> </br>
+    </div>
+   
+    
+    <div class="col-md-4">
+      <button class="btn btn-secondary" type="button" id="btnCreaSto">
+        Nuova Sto
+      </button></br>
+      <hr>
+      <button class="btn btn-secondary" type="button" id="btnListaPaAttivi">
+        Visualizza PA in corso
+      </button></br>
+      <button class="btn btn-secondary" type="button" id="btnListaPrAttivi">
+        Visualizza PR in corso
+      </button></br> 
+      <button class="btn-primary" type="button" id="btnPassword">
+        PASSWORD MAURIZIO
+      </button><br>  
+    </div>
+  </div> <!-- ROW-->
+
+  <!-- DOM output area-->
+  <hr>
+  <div id='output'> 
+    area di output<br />   
+  </div>
+  
+  <!-- footer-->
+  <?!= include ('vFooter'); ?>
+  
+  <!-- App Front End JS Library-->
+  <?!= include ('feLibrary');?> 
+  <?!= include ('feAppLogic');?> 
+   
+   
+  <!-- jsSection-->
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    
+<script>
+console.log ('inizio script');
+
+//common App Data
+//setting url for paging
+var url="<?=url?>";
+localStorage.setItem("url", url); //ok url is correct! 
+localStorage.getItem("url");
+console.log ('da index page '+url);
+
+
+
+
+//Folder, portal and documents url -hard coded
+//Folder url servizi
+var urlFolderPa='https://drive.google.com/drive/u/1/folders/1ZpkHOwofiO9MeaDK6TmSlOKr6V40ZDlG';
+var urlFolderPr='https://drive.google.com/drive/u/1/folders/1Zh7JIaldef4XSSnZpEVCuT7tk25Kjzg_';
+var urlFolderFornitori='https://drive.google.com/drive/u/1/folders/1ll8blyt42mg4wrdqessy6nCinmiYkypa';
+var urlFolderFattureFornitori='https://drive.google.com/drive/u/1/folders/1GicVsVd34WxLVVO__7_qq3op5jmdrCg6';//cartella condivisa Amm
+var urlSheetFornitori='https://docs.google.com/spreadsheets/d/1yRVQTkcwqlwBoZQRhF5aXYQiII7JUSax8Y7TIYHUT5A/edit#gid=1243004151';//gSheet
+var urlSheetSubAppaltatori='https://docs.google.com/spreadsheets/d/1_z2qy-seHlX6v-UHSaV20HM2xV5DxFoXmvMJVtWFFA4/edit#gid=1006458959';//gSheet
+
+//Folder url riferimenti
+var urlStoAcq01='https://drive.google.com/drive/u/1/folders/1XM_HSEBuCQc22umFdhqBn6F7-IkDBowu';//
+var urlStoAcq02='https://drive.google.com/drive/u/1/folders/1RZ8gW9T0E14_fvUcs9tLaTm5J6QLBn-D';//
+var urlStoAcq03='https://drive.google.com/drive/u/1/folders/1TUrdU8QOyqQ-LIHUIzTRg-NmBYheappo';//
+   
+//event listener launching folder / siti Web
+
+$( "#btnFolderPa" ).click(function() {
+  let url=urlFolderPa;
+  window.open(url); 
+});
+$( "#btnFolderPr" ).click(function() {
+  let url=urlFolderPr;
+  window.open(url); 
+});
+$( "#btnFolderFornitori" ).click(function() {
+  let url=urlFolderFornitori;
+  window.open(url); 
+});
+$( "#btnFattureFornitori" ).click(function() {
+  let url=urlFolderFattureFornitori;
+  window.open(url); 
+});
+$( "#btnListaFornitori" ).click(function() {
+  let url=urlSheetFornitori;
+  window.open(url); 
+});
+$( "#btnListaSubappaltatori" ).click(function() {
+  console.log( "lancio foler" );
+  let url=urlSheetSubAppaltatori;
+  window.open(url); 
+});
+
+//procedure e riferimenti
+$( "#btnStoAcq01").click(function() {
+  let url=urlStoAcq01;
+  window.open(url); 
+})
+$( "#btnStoAcq02" ).click(function() {
+  let url=urlStoAcq02;
+  window.open(url); 
+})
+$( "#btnStoAcq03" ).click(function() {
+  let url=urlStoAcq03;
+  window.open(url); 
+})
+
+
+
+// da attivare
+
+$( "#btnPortaliFornitori" ).click(function() {
+  alert( "procedura non attiva" );
+  // let url=urlFolderComm;
+  // window.open(url); 
+})
+$( "#btnListinoacquistoBemac" ).click(function() {
+  alert( "procedura non attiva" );
+  // let url=urlFolderComm;
+  // window.open(url); 
+})
+
+
+
+/* Automation PA PR */
+$( "#btnNuovoPa" ).click(function() {
+  url=localStorage.getItem("url");
+  window.open(url+"?page=vPaCreatePage","_top");  
+});
+$( "#btnNuovoPr" ).click(function() {
+  url=localStorage.getItem("url");
+  window.open(url+"?page=vPrCreatePage","_top");  
+});
+$( "#btnListaPa" ).click(function() {
+  url=localStorage.getItem("url");
+  window.open(url+"?page=vPaListPage","_top");  
+});
+$( "#btnListaPr" ).click(function() {
+  url=localStorage.getItem("url");
+  window.open(url+"?page=vPrListPage","_top");  
+});
+
+/* Automation Fornitori*/
+$( "#btnNuovoFornitore" ).click(function() {
+  url=localStorage.getItem("url");
+  window.open(url+"?page=vFornitoreCreatePage","_top");  
+});
+$( "#btnNuovoSubappaltatore" ).click(function() {
+  url=localStorage.getItem("url");
+  window.open(url+"?page=vSubappaltatoreCreatePage","_top");  
+});
+$( "#btnNuovoPortale" ).click(function() {
+  url=localStorage.getItem("url");
+  window.open(url+"?page=vPortaleCreatePage","_top");  
+});
+
+
+/*Automation Procedure e supporto*/
+$( "#btnPassword" ).click(function() {
+  url=localStorage.getItem("url");
+  window.open(url+"?page=vPasswordListPage","_top"); 
+});
+$( "#btnNuovaSto" ).click(function() {
+  url=localStorage.getItem("url");
+  window.open(url+"?page=vStoCreatePage","_top");  
+});
+$( "#btnListaPaAttivi" ).click(function() {
+  //lancia tabella Pa filtrata
+  alert( "procedura non attiva" );
+  // url=localStorage.getItem("url");
+  // window.open(url+"?page=vFornitoreCreatePage","_top");  
+});
+$( "#btnListaPrAttivi" ).click(function() {
+  //lancia Tabella Pr Filtrata
+  alert( "procedura non attiva" );
+  url=localStorage.getItem("url");
+  window.open(url+"?page=vFornitoreCreatePage","_top");  
+});
+
+</script>
+   
+</body>
+</html>
+
+<!-- developer notes
+  //
+-->
+
+
+
+
+
+
+
+
+
+

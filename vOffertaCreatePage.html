@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    
+    <!-- bootstrap and JQ_UI decorative library -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    
+   
+    <!-- css in external file -->
+    <?!= include ('vPage-css'); ?>
+    
+    <!-- multipage management: setting url for e.parameter obj -->
+    <?var url = getScriptUrl();?>
+  </head>
+  <body>
+    <h1 class="style1">  NEW OFFERTA FORM PAGE   </h1> 
+    <div></div>
+    
+    <!-- page control-->
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <a class="btn btn-primary style2" id='btnBack' href='<?=url?>?page=index' target="_top" role="button">Torna Alla pagina principale</a>
+        </div>
+        <div class="col-sm">  
+        </div>
+        <div class="col-sm">
+          <button type="button" class="btn btn-success" id="btnConferma">Conferma Dati Inseriti</button>
+        </div>
+      </div>
+    </div><!-- end container-->
+    <hr>
+        <!-- form creaziobe record  area  (da ricreare con template comune)-->  
+        <div class="container">
+          <form>      
+              <div class="form-row">
+                  <div class="form-group col-md-3">
+                      <label for="codOfferta">Codice Offerta</label>
+                      <input type="text" class="form-control" id="codOfferta" placeholder="Codice Offerta">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="subCodOfferta">Sub Codice Offerta</label>
+                    <input type="text" class="form-control" id="subCodOfferta" placeholder="Sub Codice Offerta">
+                </div>           
+                  <div class="form-group col-md-6">
+                      <label for="nomeBreveOfferta">Nome Breve</label>
+                      <input type="text" class="form-control" id="nomeBreveOfferta" placeholder="Nome Breve Offerta">
+                  </div>      
+              </div><!--end form row-->
+  
+              <div class="form-row">
+                  <div class="form-group col-md-6">
+                      <label for="oggettoOfferta">Oggetto</label>
+                      <input type="text" class="form-control" id="oggettoOfferta" placeholder="Oggetto">
+                  </div>
+          
+                  <div class="form-group col-md-6">
+                      <label for="noteOfferta">Note</label>
+                      <textarea class="form-control" id="noteOfferta" placeholder="Note" rows="3"></textarea>
+                  </div>
+              </div><!--end form row-->
+  
+              <div class="form-row">
+                <div class="form-group col-md-3">
+                  <label for="tipoOfferta">Tipo</label>
+                  <select id="tipoOfferta" name="tipoOfferta" placeholder="seleziona">
+                      <option value="0">Gara Pubblica</option>
+                      <option value="1">Gara Mercato</option>
+                      <option value="2">Game</option>
+                  </select>  
+                </div>
+
+              <div class="form-group col-md-3">
+                <label for="statoOfferta">Stato</label>
+                <select id="statoOfferta" name="statoOfferta" placeholder="seleziona">
+                    <option value="0">Attiva</option>
+                    <option value="1">StandBy</option>
+                    <option value="2">Inviata</option>
+                    <option value="3">Accettata</option>
+                    <option value="4">Respinta</option>
+                </select>  
+              </div>
+
+              <div class="form-group col-md-6">
+                  <label for="clienteGame">clienteOfferta</label>
+                  <input type="text" class="form-control" id="clienteOfferta" placeholder="cliente">
+              </div>
+            </div><!--end form row-->
+  
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <label for="responsabileOfferta">Responsabile</label>
+                <select id="responsabileOfferta" name="responsabileOfferta" placeholder="seleziona">
+                    <option value="0">Alessio Diegoli</option>
+                    <option value="1">Maurizio Mazzanti</option>
+                    <option value="2">Altro</option>
+                </select>  
+              </div>
+
+              <div class="form-group col-md-9">
+                  <label for="linkOfferta">Link Folder Offerta</label>
+                  <input type="text" class="form-control" id="linkOfferta" placeholder="link Folder Offerta">
+              </div>
+            </div><!--end form row-->
+
+          </form>
+        </div><!-- end container--> 
+    
+    <!-- test area -->
+    <div id='output'> 
+      area di output<br />   
+    </div>
+    
+    <!-- jsSection-->
+    
+    <script src="https://code.jquery.com/jquery-3.4.0.js" integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>    
+    
+    <!-- App Front End JS Library-->
+  <?!= include ('feLibrary');?> 
+  <?!= include ('feAppLogic');?> 
+
+<script>
+console.log('in crea Offerta Page');
+
+$(document).ready(function(){
+  //EVENT LISTENER
+  $("#btnConferma").click(function(){
+    //init,  test & acquisizione dati in input
+    alert('hai confermato i dati. Procedo alla creazione del Game sul Folder e sul database');
+    console.log('lista dati inseriti');
+    let codOfferta=$("#codOfferta").val();
+    let subCodOfferta=$("#subCodOfferta").val();
+    let tipoOfferta=$("#tipoOfferta").val();
+    let nomeBreveOfferta=$("#nomeBreveOfferta").val();
+    let oggettoOfferta=$("#oggettoOfferta").val();
+    let noteOfferta=$("#noteOfferta").val();
+    let clienteOfferta=$("#clienteOfferta").val();
+    let statoOfferta=$("#statoOfferta").val();
+    let linkOfferta=$("#linkOfferta").val();
+    let responsabileOfferta=$("#responsabileOfferta").val();
+    
+    
+    
+    let offertaValues=[codOfferta, subCodOfferta, tipoOfferta, nomeBreveOfferta, oggettoOfferta, noteOfferta, clienteOfferta, statoOfferta, linkOfferta, responsabileOfferta ];
+    
+    console.log('dati offerta da creare: '+offertaValues);
+    
+    //lancia la funzione  che gestisce la creazione del record e del folder
+    //la funzione ritorna un messaggio all'utente
+    
+    offertaCreate(offertaValues);//feAppLogic module
+    
+    /*Nota developer: cosa fa la funzione offertaCreate
+    //lancia con i parametri corretti la funzione beAppLogic che, con due distinte chiamate
+    a funzioni server provvede a:
+    //creare  record su database
+    //creare folder (con caricamento template)sul Drive
+    //la call back function ritorna un messaggio x user
+    */
+      
+  });
+});
+
+
+$( "#btnBack" ).click(function() {
+  // not used
+  
+});
+
+
+/*developer notes:
+
+toDo
+
+Done
+# solo acquisizione dati in input e lancio feAppLogic function correlata
+
+
+*/
+</script>
+</body>
+</html>
+
+

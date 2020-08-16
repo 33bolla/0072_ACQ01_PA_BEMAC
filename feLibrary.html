@@ -1,0 +1,67 @@
+<script> 
+/**
+ * Libreria di funzioni Front End standard  per Automazione
+ *                  --------by maoSoft()---------
+ *
+ *  ---------------------------------------------------------------- -------------------
+ *   R01.002| 20200811| revisione per  miglioramento documentazione applicazione CMA001_PortalCMA   
+ *  ------------------------------------------------------------------------------------ 
+ *  function list (last in first out)
+ * 
+ *
+ *#createAppFolder //lancia la coniugata BE 
+    *che crea un folder nella url indicata e carica template files. 
+*/
+   
+    //init library for using in AppScript
+    console.log('in jsApp Front End Library');
+    var url = localStorage.getItem("url"); // mandatory to open new window on google managed cloud!
+    
+
+    function createAppFolder(idAppFolder, folderName, templates){
+        /** 
+         * lancia la funzione be coniugata (libreria beDriveManager) che crea un nuovo folder con nome folderName nella cartella 
+         * parent (idAppFolder), carica nel folder creato i files template (array di id in templates)
+         * 
+         * @param idAppFolder (str) id del Folder padre
+         * @param folderName (str) nome da attribuire al folder
+         * @param templates (array) id dei files da caricare nel folder alla sua creazione
+        */
+        
+        //init & test
+        console.log('in folder create js FE');   
+
+        //call server side coniugate function 
+        google.script.run.withSuccessHandler(onSuccess)
+            .gsCreateAppFolder(idAppFolder, folderName, templates); 
+            
+        //callback function
+        function onSuccess(risultato) {      
+           console.log('questo è il valore ritornato dal BE:  '+risultato); 
+        }  
+    
+        /** ----Developer notes and needed improvements -------
+         *  
+         *  ---------------------------------------------------------------- 
+         *  R01.001| 20200811| testata con applicazione CMA001_PortalCMA   
+         *  ---------------------------------------------------------------- 
+        * */     
+    }
+    
+    console.log(' jsApp Front End Library Loaded');
+    /** ----developer notes and needed improvements -------
+     *  nella fe Libraries e al fine di semplificare
+     *  il codice delle vxxxPage dovrebbero essere presenti:  
+     *  #template for modal
+     *  #template for form
+     *  #standard event listener 
+     * 
+     *          -----library change log-----
+     * 
+     *  ---------------------------------------------------------------- 
+     *  R01.001| 20200810| testata con applicazione CMA001_PortalCMA   
+     *  ----------------------------------------------------------------
+     * */  
+    </script>
+
+

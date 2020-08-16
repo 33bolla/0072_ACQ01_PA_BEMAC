@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    
+    <!-- bootstrap and JQ_UI decorative library -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href=" https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+   
+   
+    <!-- css in external file -->
+    <?!= include ('vPage-css'); ?>
+    
+    <!-- multipage management: setting url for e.parameter obj -->
+    <?var url = getScriptUrl();?>
+  </head>
+  <body>
+    <h1 class="style1"> OFFERTA UPDATE ASSISTANT PAGE  </h1> 
+    <div></div>
+    
+    <!-- page control-->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <a class="btn btn-primary style2" id='btnBack' href='<?=url?>?page=index' target="_top" role="button">Torna alla pagina principale</a>
+            </div>
+            <div class="col-sm"> 
+                <a class="btn btn-primary style2" id='btnBack' href='<?=url?>?page=vOffertaListPage' target="_top" role="button">Torna alla lista Offerte</a> 
+            </div>
+            <div class="col-sm">
+                <button type="button" class="btn btn-success" id="btnConferma">Conferma Dati Inseriti</button>
+            </div>
+        </div>
+    </div><!-- end container-->
+    
+    <hr>
+    
+    <!-- table for datatable  -->
+    <div class="container">
+      <table id=targetTable class="display" width="100%"></table>
+    </div><!-- end container--> 
+    
+    <!-- form visualizzazione estesa record  area  (deve diventare un template)-->  
+    <div class="container">
+        <form>      
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="codOfferta">Codice Offerta</label>
+                    <input type="text" class="form-control" id="codOfferta" placeholder="Codice Offerta">
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="subCodOfferta">Sub Codice Offerta</label>
+                  <input type="text" class="form-control" id="subCodOfferta" placeholder="Sub Codice Offerta">
+                </div>           
+                <div class="form-group col-md-6">
+                    <label for="nomeBreveOfferta">Nome Breve</label>
+                    <input type="text" class="form-control" id="nomeBreveOfferta" placeholder="Nome Breve Offerta">
+                </div>      
+            </div><!--end form row-->
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="oggettoOfferta">Oggetto</label>
+                    <input type="text" class="form-control" id="oggettoOfferta" placeholder="Oggetto">
+                </div>
+        
+                <div class="form-group col-md-6">
+                    <label for="noteOfferta">Note</label>
+                    <textarea class="form-control" id="noteOfferta" placeholder="Note" rows="3"></textarea>
+                </div>
+            </div><!--end form row-->
+
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                  <label for="tipoOfferta">Tipo</label>
+                  <select id="tipoOfferta" name="tipoOfferta" placeholder="seleziona">
+                      <option value="0">Gara Pubblica</option>
+                      <option value="1">Gara Mercato</option>
+                      <option value="2">Game</option>
+                  </select>  
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label for="statoOfferta">Stato</label>
+                    <select id="statoOfferta" name="statoOfferta" placeholder="seleziona">
+                        <option value="0">Attiva</option>
+                        <option value="1">StandBy</option>
+                        <option value="2">Inviata</option>
+                        <option value="3">Accettata</option>
+                        <option value="4">Respinta</option>
+                    </select>  
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="clienteGame">clienteOfferta</label>
+                    <input type="text" class="form-control" id="clienteOfferta" placeholder="cliente">
+                </div>
+            </div><!--end form row-->
+
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                  <label for="responsabileOfferta">Responsabile</label>
+                  <select id="responsabileOfferta" name="responsabileOfferta" placeholder="seleziona">
+                      <option value="0">Alessio Diegoli</option>
+                      <option value="1">Maurizio Mazzanti</option>
+                      <option value="2">Altro</option>
+                  </select>  
+                </div>
+  
+                <div class="form-group col-md-9">
+                    <label for="linkOfferta">Link Folder Offerta</label>
+                    <input type="text" class="form-control" id="linkOfferta" placeholder="link Folder Offerta">
+                </div>
+            </div><!--end form row-->
+
+
+
+
+        </form>
+    </div><!-- end container--> 
+
+    <!-- buttons automazione e  visualizzazione folder & files del game  -->  
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <button type="button" class="btn btn-primary" id="btnApriFolder">Apri cartella Processo</button>
+            </div>
+            <div class="col-sm"> 
+                <button type="button" class="btn btn-primary" id="btnApriLogProcesso">Apri logControlloProcesso</button>
+            </div>
+            <div class="col-sm">
+                <button type="button" class="btn btn-primary" id="btnApriListaDocumenti">Apri lista documenti processo</button>
+            </div>
+        </div>
+    </div><!-- end container--> 
+
+
+    <!-- test area -->
+    <div id='output'> 
+      area di output<br />   
+    </div>
+    
+    <!-- jsSection-->
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>    
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
+
+    <!-- App Front End JS Library-->
+  <?!= include ('feLibrary');?> 
+  <?!= include ('feAppLogic');?> 
+
+<script>
+//init & test
+console.log('in Assistant Update Game Page');
+var offerteFolderId=('1V3p2aeEq_gKrhxwMmFYOzhqu3wqT46Yy')//hard coded
+//alert('funzionalità in sviluppo');
+
+//event listener (on saving data changes on form)
+$("#btnConferma").click(function(){
+    //init,  test & acquisizione dati in input
+    
+    //let id=idOfferta;//non viene storata con ready function iniziale 
+    let id=sessionStorage.getItem('idOfferta');
+    console.log('valore di id per update=  '+id);
+    let codOfferta=$("#codOfferta").val();
+    let subCodOfferta=$("#subCodOfferta").val();
+    let tipoOfferta=$("#tipoOfferta").val();
+    let nomeBreveOfferta=$("#nomeBreveOfferta").val();
+    let oggettoOfferta=$("#oggettoOfferta").val();
+    let noteOfferta=$("#noteOfferta").val();
+    let clienteOfferta=$("#clienteOfferta").val();
+    let statoOfferta=$("#statoOfferta").val();
+    let linkOfferta=$("#linkOfferta").val();
+    let responsabileOfferta=$("#responsabileOfferta").val();
+    
+    let offertaValues=[id, codOfferta, subCodOfferta, tipoOfferta, nomeBreveOfferta, oggettoOfferta, noteOfferta, clienteOfferta, statoOfferta, linkOfferta, responsabileOfferta ];
+    console.log('valori form aggiornati'+ offertaValues);
+
+    //call server side beAppLogic function
+    //chiama la funzione custom in BE che chiama CRUD 
+    //trasferisco anche id=offertaValues[0];
+    google.script.run.withSuccessHandler(onSuccess)
+        .gsUpdateRecord('cmaTec', 'offerte', offertaValues);
+    
+        //callback function
+        function onSuccess(dataSet) {      
+            //test & init          
+            console.log('questo è il valore ritornato dal BE:  '+dataSet); 
+            alert( 'tutto OK aggiornamento eseguito con successo!');
+        }
+});
+
+$("#btnApriFolder").click(function(){
+    //init,  test & acquisizione dati in input
+    console.log('in btnApriFolder listener');
+    let codiceOfferta=sessionStorage.getItem('codiceOfferta');
+    console.log('codiceOfferta letto ='+codiceOfferta);
+    console.log('id folder Offerta hard coded  ='+offerteFolderId);
+    
+    //-------d aqui
+    let folderValues= openGameFolder(codiceOfferta, offerteFolderId);//open the Game folder (easy version no change on database)
+    console.log(folderValues);
+});
+
+$("#btnApriLogProcesso").click(function(){
+    //init,  test & acquisizione dati in input
+    console.log('in btnApriLogProcesso listener');
+    let codiceOfferta=sessionStorage.getItem('codiceOfferta');
+    console.log('codice Offerta  letto ='+codiceOfferta);
+    console.log('id folder Offerta hard coded  ='+offerteFolderId);
+    
+    //select sheet
+    let sheetName='log&todo';
+    let folderValues= openControlloProcesso(codiceOfferta, offerteFolderId, sheetName);//open the sheet (easy version no change on database)
+    console.log(folderValues);
+    console.log('out of event listener logProcesso');
+});
+
+$("#btnApriListaDocumenti").click(function(){
+    //init,  test & acquisizione dati in input
+    console.log('in btnApriListaDocumentilistener');
+    let codiceOfferta=sessionStorage.getItem('codiceOfferta');
+    console.log('codiceOfferta letto ='+codiceOfferta);
+    console.log('id folder Game hard coded  ='+offerteFolderId);
+    
+    //select sheet
+    let sheetName='gestioneDoc';
+    let folderValues= openControlloProcesso(codiceOfferta, offerteFolderId, sheetName);//open the sheet (easy version no change on database)
+    console.log(folderValues);
+    console.log('out of event listener lista docs');
+});
+
+
+
+
+
+
+//page initial rendering
+$(document).ready(function(){
+   //lancia la qry di selezione per ottenere i dati del record da JDBC, attraverso il modulo beAppLogic 
+   //beAppLogic  lancia la query utilizzando  la classe CRUD
+   
+   //init & test
+   //il valore dell'id del record richiesto è memorizzato in locale con session storage
+   console.log('in ready function');
+   let dbase='cmaTec';
+   
+   //identificativo del record selezionato in vOffertaListPage (click su datatable)
+   var idOfferta=sessionStorage.getItem('idOfferta');
+   console.log('idOfferta letto ='+idOfferta);
+   
+   // error management
+   if (!idOfferta){
+       alert ('idGame non trovato contatta lo sviluppatore');
+       window.open(url+"?page=vOffertaListPage","_top"); 
+   }
+
+   //query builder
+   qry='SELECT * FROM cmaTec.offerte where Id='+idOfferta+';';
+
+   //call server side beAppLogic function 
+   console.log('calling befunction gsArray');
+   google.script.run.withSuccessHandler(onSuccess)
+        .gsArrayReadTable(dbase, qry); 
+            
+        //callback function
+        function onSuccess(dataSet) {      
+            //test & init          
+            console.log('questo è il valore ritornato dal BE:  '+dataSet); 
+            //alert( 'tutto OK!');
+
+            //datables library in order to showing data
+            $('#targetTable').DataTable( {
+                data: dataSet,
+                columns: [
+                    { title: "id" },
+                    { title: "codOfferta" },
+                    { title: "subCodOfferta" },
+                    { title: "tipoOfferta" },
+                    { title: "nomeBreveOfferta" },
+                    { title: "oggettoOfferta" },
+                    { title: "noteOfferta" },
+                    { title: "clienteOfferta" },
+                    { title: "statoOfferta" },
+                    { title: "linkOfferta" },
+                    { title: "responsabileOfferta" }
+                ]
+            } );
+            
+            //form Filling with record data
+            $('#id').val(dataSet[0][0]);
+            $('#codOfferta').val(dataSet[0][1]);
+            $('#subCodOfferta').val(dataSet[0][2]);
+            $('#tipoOfferta').val(dataSet[0][3]);
+            $('#nomeBreveOfferta').val(dataSet[0][4]);
+            $('#oggettoOfferta').val(dataSet[0][5]);
+            $('#noteOfferta').val(dataSet[0][6]);
+            $('#clienteOfferta').val(dataSet[0][7]);
+            $('#statoOfferta').val(dataSet[0][8]);
+            $('#linkOfferta').val(dataSet[0][9]);
+            $('#responsabileOfferta').val(dataSet[0][10]);
+            
+
+            //-----setting selected record idGame on session storage as 'codiceOfferta '
+            sessionStorage.setItem('codiceOfferta', dataSet[0][1]); 
+        
+        } 
+});
+
+
+
+
+/*developer notes:
+
+toDo
+#inserire librerie x datatable***
+#crea tabella target ***
+#crea funzione beAppLogic per script JDBC per popolare la tabella ****
+
+Done
+
+
+
+*/
+</script>
+</body>
+</html>
+
+

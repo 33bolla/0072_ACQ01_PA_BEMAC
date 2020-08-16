@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    
+    <!-- bootstrap and JQ_UI decorative library -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href=" https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+   
+   
+    <!-- css in external file -->
+    <?!= include ('vPage-css'); ?>
+    
+    <!-- multipage management: setting url for e.parameter obj -->
+    <?var url = getScriptUrl();?>
+  </head>
+  <body>
+    <h1 class="style1"> GAME UPDATE ASSISTANT PAGE  </h1> 
+    <div></div>
+    
+    <!-- page control-->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <a class="btn btn-primary style2" id='btnBack' href='<?=url?>?page=index' target="_top" role="button">Torna alla pagina principale</a>
+            </div>
+            <div class="col-sm"> 
+                <a class="btn btn-primary style2" id='btnBack' href='<?=url?>?page=vGameListPage' target="_top" role="button">Torna alla lista Games</a> 
+            </div>
+            <div class="col-sm">
+                <button type="button" class="btn btn-success" id="btnConferma">Conferma Dati Inseriti</button>
+            </div>
+        </div>
+    </div><!-- end container-->
+    
+    <hr>
+    
+    <!-- table for datatable  -->
+    <div class="container">
+      <table id=targetTable class="display" width="100%"></table>
+    </div><!-- end container--> 
+    
+    <!-- form visualizzazione estesa record  area  (deve diventare un template)-->  
+    <div class="container">
+        <form>      
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="idGame">Numero Game</label>
+                    <input type="text" class="form-control" id="idGame" placeholder="Numero Game">
+                </div>
+          
+                <div class="form-group col-md-6">
+                    <label for="nomeBreveGame">Nome Breve</label>
+                    <input type="text" class="form-control" id="nomeBreveGame" placeholder="Nome Breve" Game>
+                </div>      
+            </div><!--end form row-->
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="oggettoGame">Oggetto</label>
+                    <input type="text" class="form-control" id="oggettoGame" placeholder="Oggetto">
+                </div>
+        
+                <div class="form-group col-md-6">
+                    <label for="noteGame">Note</label>
+                    <textarea class="form-control" id="noteGame" placeholder="Note" rows="3"></textarea>
+                </div>
+            </div><!--end form row-->
+
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="clienteGame">clienteGame</label>
+                    <input type="text" class="form-control" id="clienteGame" placeholder="cliente">
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="statoGame">Stato</label>
+                    <select id="statoGame" name="statoGame" placeholder="seleziona">
+                        <option value="0">Attiva</option>
+                        <option value="1">StandBy</option>
+                        <option value="2">Terminata</option>
+                        <option value="3">Archiviata</option>
+                    </select>  
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="id">idRecord</label>
+                    <input type="text" class="form-control" id="id" placeholder="idRecord">
+                </div>
+            </div><!--end form row-->
+        </form>
+    </div><!-- end container--> 
+
+    <!-- buttons automazione e  visualizzazione folder & files del game  -->  
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <button type="button" class="btn btn-primary" id="btnApriFolder">Apri cartella Processo</button>
+            </div>
+            <div class="col-sm"> 
+                <button type="button" class="btn btn-primary" id="btnApriLogProcesso">Apri logControlloProcesso</button>
+            </div>
+            <div class="col-sm">
+                <button type="button" class="btn btn-primary" id="btnApriListaDocumenti">Apri lista documenti processo</button>
+            </div>
+        </div>
+    </div><!-- end container--> 
+
+
+    <!-- test area -->
+    <div id='output'> 
+      area di output<br />   
+    </div>
+    
+    <!-- jsSection-->
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>    
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
+
+    <!-- App Front End JS Library-->
+  <?!= include ('feLibrary');?> 
+  <?!= include ('feAppLogic');?> 
+
+<script>
+//init & test
+console.log('in Assistant Update Game Page');
+let gameFolderId=('1yChSNxEzM-8JqXgTcIOePS1pIcmIDSR7')//hard coded
+//alert('funzionalità in sviluppo');
+
+//event listener (on saving data changes on form)
+$("#btnConferma").click(function(){
+    //init,  test & acquisizione dati in input
+    //alert('hai confermato i dati. Procedo alla modifica del folder sul database');
+    let id=$('#id').val();
+    let idGame=$('#idGame').val();
+    let nomeBreveGame=$('#nomeBreveGame').val();
+    let oggettoGame=$('#oggettoGame').val();
+    let noteGame=$('#noteGame').val();
+    let clienteGame=$('#clienteGame').val();
+    let statoGame=$('#statoGame').val();
+    
+    let gameValues=[id, idGame, nomeBreveGame,oggettoGame,noteGame,clienteGame,statoGame];
+    console.log('valori form aggiornati'+ gameValues);
+    
+    //call server side beAppLogic function
+    //chiama la funzione custom in BE che chiama CRUD 
+    google.script.run.withSuccessHandler(onSuccess)
+        .gsUpdateRecord('cmaTec', 'games', gameValues);
+    
+        //callback function
+        function onSuccess(dataSet) {      
+            //test & init          
+            console.log('questo è il valore ritornato dal BE:  '+dataSet); 
+            alert( 'tutto OK aggiornamento eseguito con successo!');
+        }
+});
+
+$("#btnApriFolder").click(function(){
+    //init,  test & acquisizione dati in input
+    console.log('in btnApriFolder listener');
+    let codiceGame=sessionStorage.getItem('codiceGame');
+    console.log('codiceGame letto ='+codiceGame);
+    console.log('id folder Game hard coded  ='+gameFolderId);
+    
+    
+    let folderValues= openGameFolder(codiceGame, gameFolderId);//open the Game folder (easy version no change on database)
+    console.log(folderValues);
+});
+
+$("#btnApriLogProcesso").click(function(){
+    //init,  test & acquisizione dati in input
+    console.log('in btnApriLogProcesso listener');
+    let codiceGame=sessionStorage.getItem('codiceGame');
+    console.log('codiceGame letto ='+codiceGame);
+    console.log('id folder Game hard coded  ='+gameFolderId);
+    
+    //select sheet
+    let sheetName='log&todo';
+    let folderValues= openControlloProcesso(codiceGame, gameFolderId, sheetName);//open the sheet (easy version no change on database)
+    console.log(folderValues);
+    console.log('out of event listener logProcesso');
+});
+
+$("#btnApriListaDocumenti").click(function(){
+    //init,  test & acquisizione dati in input
+    console.log('in btnApriListaDocumentilistener');
+    let codiceGame=sessionStorage.getItem('codiceGame');
+    console.log('codiceGame letto ='+codiceGame);
+    console.log('id folder Game hard coded  ='+gameFolderId);
+    
+    //select sheet
+    let sheetName='gestioneDoc';
+    let folderValues= openControlloProcesso(codiceGame, gameFolderId, sheetName);//open the sheet (easy version no change on database)
+    console.log(folderValues);
+    console.log('out of event listener lista docs');
+});
+
+
+
+
+
+
+//page initial rendering
+$(document).ready(function(){
+   //lancia la qry di selezione per ottenere i dati del record da JDBC, attraverso il modulo beAppLogic 
+   //beAppLogic  lancia la query utilizzando  la classe CRUD
+   
+   //init & test
+   //il valore dell'id del record richiesto è memorizzato in locale con session storage
+   console.log('in ready function');
+   let dbase='cmaTec';
+   let idGame=sessionStorage.getItem('idGame');
+   console.log('idGame letto ='+idGame);
+   
+   // error management
+   if (!idGame){
+       alert ('idGame non trovato');
+       idGame=2;
+   }
+   console.log(idGame);
+
+   //query builder
+   qry='SELECT * FROM cmaTec.games where Id='+idGame+';';
+
+   //call server side beAppLogic function 
+   console.log('calling befunction gsArray');
+   google.script.run.withSuccessHandler(onSuccess)
+        .gsArrayReadTable(dbase, qry); 
+            
+        //callback function
+        function onSuccess(dataSet) {      
+            //test & init          
+            console.log('questo è il valore ritornato dal BE:  '+dataSet); 
+            //alert( 'tutto OK!');
+
+            //datables library in order to showing data
+            $('#targetTable').DataTable( {
+                data: dataSet,
+                columns: [
+                    { title: "Id" },
+                    { title: "IdGame" },
+                    { title: "nomeBreve" },
+                    { title: "oggetto" },
+                    { title: "note" },
+                    { title: "cliente" },
+                    { title: "stato" }
+                ]
+            } );
+            
+            //form Filling with record data
+            $('#id').val(dataSet[0][0]);
+            $('#idGame').val(dataSet[0][1]);
+            $('#nomeBreveGame').val(dataSet[0][2]);
+            $('#oggettoGame').val(dataSet[0][3]);
+            $('#noteGame').val(dataSet[0][4]);
+            $('#clienteGame').val(dataSet[0][5]);
+            $('#statoGame').val(dataSet[0][6]);
+
+            //-----setting selected record idGame on session storage as 'codiceGame '
+            sessionStorage.setItem('codiceGame', dataSet[0][1]); 
+        
+        } 
+});
+
+
+
+
+/*developer notes:
+
+toDo
+#inserire librerie x datatable***
+#crea tabella target ***
+#crea funzione beAppLogic per script JDBC per popolare la tabella ****
+
+Done
+
+
+
+*/
+</script>
+</body>
+</html>
+
+

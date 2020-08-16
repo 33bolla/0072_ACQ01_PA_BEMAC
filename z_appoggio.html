@@ -1,0 +1,73 @@
+<script>
+        this.stmt.setString(1, this.values[1]);
+        this.stmt.setString(2, this.values[2]);
+        this.stmt.setString(3, this.values[3]);
+        this.stmt.setString(4, this.values[4]);
+        this.stmt.setString(5, this.values[5]);
+        this.stmt.setString(6, this.values[6]);
+        this.stmt.setString(7, this.values[7]);
+        this.stmt.setString(8, this.values[8]);
+        this.stmt.setString(9, this.values[9]);
+        this.stmt.setString(10, this.values[10]);
+
+        this.stmt.setLong  (11, this.values[0]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+function createGame(appValues, idAppFolder, templates){
+  /**
+   * richiamata da feApp o da ui. Crea un nuovo folder nel folder games 
+   * carica nel folder i templates
+   * 
+   * @param idAppFolder (str) id del Folder padre
+   * @param templates (array) id dei files da caricare nel folder alla sua creazione
+   * @param appValues (array) valori del record Game creato
+  */
+  //init & test
+  console.log('in createGame feAppLogic');   
+
+  //call server side coniugate function 
+  google.script.run.withSuccessHandler(onSuccess)
+      .createGame(appValues, idAppFolder, templates); 
+      
+  //callback function
+  function onSuccess(risultato) {      
+     console.log('questo è il valore ritornato dal BE:  '+risultato); 
+  }  
+
+  /** ----developer notes and needed improvements -------
+       *  in realtà questa è una funzione che lavora con la procedura  games
+       *  occorre generalizzarla come in folderCreate.
+       *  ---------------------------------------------------------------- 
+       *  R01.001| 20200811| testata con applicazione CMA001_PortalCMA   
+       *  ---------------------------------------------------------------- 
+  * */      
+}
+</script>
+
+<div class="container">
+    <form>      
+      <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="inputGame">Oggetto</label>
+            <input type="text" class="form-control" id="inputGame" placeholder="Numero Game">
+          </div>
+      
+          <div class="form-group col-md-6">
+              <label for="inputOggettoGame">Oggetto</label>
+              <input type="text" class="form-control" id="inputOggettoGame" placeholder="Oggetto" Game>
+          </div>
+              
+      </div><!--end form row-->
+    </form>
+  </div><!-- end container--> 
