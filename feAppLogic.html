@@ -1,23 +1,106 @@
 <script> 
 /**
- * Libreria di funzioni specifiche  maoSoft() per Automazione di questa App (Controller)
-
+ * Libreria di funzioni Front End specifiche   per 0072_ACQ01_PA_BEMAC
+ *                  --------by maoSoft()---------
+ *
+ *  ---------------------------------------------------------------- -------------------
+ *   R01.001| 20200818| revisione per  adattamento  applicazione CMA001_PortalCMA   
+ *  ------------------------------------------------------------------------------------ 
+ *  function list (last in first out)
+ * 
+ *#paCreate(paValues)//crea il record nel database e il folder (con i files template) su gDrive
+ *getPaLastFolderCod()
+ *#createAppFolder //lancia la coniugata BE 
+ *che crea un folder nella url indicata e carica template files. 
 */
-//functions list
+
+
+
+//functions list (old)
 /*
-folderGameCreate(nomeFolder, oggettoGame) //(obsolete) crea un folder nella url indicata (games) e carica i template files
-gameCreate(gamesValue)//crea il record nel dtabase e il folder (con i files template) su gDrive
+
+---
+getPaLastFolder() //ottiene il codice da assegnare al nuovo PA e lo inserisce nella form
+
 openGameFolder(idGame)//open  gamefolder (no database storing needed)
 openControlloProcesso(idgame)// open ss controlloProcesso (primo sheet= )
-offertaCreate
+
 */
 
-//init library for using in App
+//init library for testing and using in App
 console.log('in feAppLogic  Front End Controller');
 var url = localStorage.getItem("url"); // mandatory to open new window on google managed cloud!
+function paCreate(paValues){
+    /**
+     * launch a beFunctions (in beAppLogic) that creates a new game record on table 'games' and, after,
+     * creates a new folder with templates files inside
+     * 
+     * @param paValues (arr) array con i dati del nuovo pa
+     *
+     * i dati da passare al BE per la creazione del folder sono hard coded in questa funzione
+    */
+    
+    //init & test
+    console.log('in  paCreate feAppLogic');           
+    
+    //setting folder  parameters 
+    let idPaFolder='1ZpkHOwofiO9MeaDK6TmSlOKr6V40ZDlG';//hard coded : cartella PA
+
+    //setting  templates parameters and put them in an array
+    //template gSheet posti nella cartella maurizioBemac BINF_/IT_Template
+    let idControlloProcesso='1TpM63aV5TgttMsRa0-uTPUNFDRafQ7oukQC22UQMc-o';//hard coded template controlloProcesso  
+    let idPaSheet='1v41_iITJoDgz4aW9iONRkJGePBM3Qc7cjw9FM02pJh0';//hard coded                                                                         
+    let idTemplates=[idControlloProcesso,idPaSheet];//gsheet (al momento solo un template viene copiato nel nuovo folder)
+    
+    //engine
+    /** lancia la funzione gsPaCreate (beAppLogic) che avvia in successione 
+     * due distinte funzioni di libreria: #una per la creazione del record-> createRecord (beLibrary) 
+     * e #una per la creazione di un folder con caricamento di file (templates) -> createFolder (beLibrary)
+     * i file copia dei templates vengono modificati in fase di creazione
+     * #con la funzione di callback avviso l'utente sulla esecuzione
+     * 
+     * nel futuro creare una classe PA le cui istanze (PA) sono dotate di metodi per gDrive e per dBase
+     * gsPaCreate è la funzione lato be coniugata con questa funzione  */
+    
+        //call conjugate be function on beAppLogic
+    google.script.run.withSuccessHandler(onSuccess)
+        .gsPaCreate(paValues, idPaFolder, idTemplates); 
+        
+        //managing callback function
+    function onSuccess(risultato) {      
+        console.log('questo è il valore ritornato dal BE:  '+risultato); //test
+        alert ('tutto ok'); //user info
+    }  
+}
+function getPaLastFolderCod(){
+    /**
+     * launch a beFunction (in beDriveManager) that return the cod of last sub folder
+     * in parentFolder; updates form newPa
+     * 
+     * i dati da passare al BE per identifiare il parent folder  sono hardCoded
+    */
+    //parent folder id
+    let idParentFolder='1ZpkHOwofiO9MeaDK6TmSlOKr6V40ZDlG';//hc folder PA
+    
+    //call server side function beAppLogic
+    google.script.run.withSuccessHandler(onSuccess)
+        .gsGetNewFolderCode(idParentFolder);  
 
 
-function openControlloProcesso(codiceGame, gameFolderId){
+    //callback function
+    function onSuccess(risultato) {      
+       console.log('questo è il valore ritornato dal BE:  '+risultato); 
+       $("#codPa").val(risultato);//set input field value
+       alert('Nuovo numero attribuito al Processo:  '+risultato+'  //n puoi procedere');
+    }
+    
+}
+
+
+
+
+
+function openDocument(codicePa, paFolderId, fileName){
     /**
      * launch a beFunctions getSheetUrl (in beAppLogic) able to"
      * get  requested folder and  its url 
@@ -25,54 +108,51 @@ function openControlloProcesso(codiceGame, gameFolderId){
      * (it's a trick you should use document id instead)
      * on success open gSheet file
      * 
-     * @param {string} codiceGame valore del campo idGame sul database che coincide con i primi 5 caratteri  
+     * @param {string} codicePa valore del campo idPa sul database che coincide con i primi 5 caratteri  
      * del nome del folder da aprire
-     * @param {string} gameFolderId Id del folder Games
+     * @param {string} paFolderId Id del folder Pa
      * @returns {string} log message
     */
     //init & test
     console.log('in open Controllo Processo  -feAppLogic'); 
-    console.log('game numero  '+codiceGame);
-    console.log('folder id  ='+gameFolderId);
-    let fileName='controlloProcesso';
+    console.log('Pa numero  '+codicePa);
+    console.log('folder id  ='+paFolderId);
+   
 
     //call server side app function (beAppLogic)
     google.script.run.withSuccessHandler(onSuccess)
-        .getSheetUrl(codiceGame, gameFolderId, fileName); 
+        .getSheetUrl(codicePa, paFolderId, fileName); 
             
         //callback function
         function onSuccess(fileUrl) {      
            console.log('questo è il valore ritornato dal BE:  '+fileUrl); 
            window.open(fileUrl, "_blank");
         }  
-    
-
-
+ 
     console.log('out from Controllo Processo -feAppLogic'); 
-    return codiceGame
+    return codicePa
 
 }
 
-
-function openGameFolder(codiceGame, gameFolderId){
+function openPaFolder(codicePa, paFolderId){
     /**
      * launch a beFunctions (in beAppLogic) getting  request folder and return its url
      * next: open  a new window showing folder 
      * 
-     * @param {string} codiceGame valore del campo idGame sul database che coincide con i primi 5 caratteri  
-     * del nome del folder da aprire
-     * @param {string} gameFolderId Id del folder Games
+     * @param {string} codicePa valore del campo cod sulla tabella ACQ_PA   
+     * (coincide con i primi 5 caratteri del nome del folder da aprire)
+     * @param {string} paFolderId Id del folder Pa (parent folder)
      * @returns {string} log message
     */
     
     //init & test
-    console.log('in folder Game create -feAppLogic'); 
-    console.log('game numero  '+codiceGame);
-    console.log('folder id  ='+gameFolderId)
+    console.log('in folder Pa create -feAppLogic'); 
+    console.log('pa numero  '+codicePa);
+    console.log('folder id  ='+paFolderId)
     
     //call server side app function
     google.script.run.withSuccessHandler(onSuccess)
-            .getFolderUrl(codiceGame, gameFolderId); 
+            .getFolderUrl(codicePa, paFolderId); 
             
         //callback function
         function onSuccess(folderUrl) {      
@@ -82,119 +162,9 @@ function openGameFolder(codiceGame, gameFolderId){
     
 
 
-    console.log('out from folder Game create -feAppLogic'); 
-    return codiceGame
+    console.log('out from folder Pa create -feAppLogic'); 
+    return codicePa
 }         
-
-
-
-
-
-function gameCreate(gameValues){
-    /**
-     * launch a beFunctions (in beAppLogic) that creates a new game record on table 'games' and, after,
-     * creates a new folder with templates files inside
-     * 
-     * @param gameValues (arr) array con i dati del nuovo game
-     *
-     * i dati da passare al BE per la creazione del folder sono hard coded in questa funzione
-    */
-    
-    //init & test
-    console.log('in folder Game create -feAppLogic');           
-    
-        //setting folder  parameters 
-    let idGameFolder='1yChSNxEzM-8JqXgTcIOePS1pIcmIDSR7';//hard coded : cartella Games
-
-        //setting  templates parameters 
-    let idControlloProcesso='1YnJ3GQjB5rJoybubGtir6hhERn_96Jw2-mLCkYhFEBE';//hard coded template controlloProcesso
-                                                                            //gSheet posto nella cartella Games
-    let idTemplates=[idControlloProcesso];//gsheet (al momento solo un template viene copiato nel nuovo folder)
-    
-    //engine
-    /** lancia la funzione gsGameCreate (beAppLogic) che avvia in successione 
-     * due distinte funzioni di libreria: una per la creazione del record-> createRecord (beLibrary) 
-     * e una per la creazione di un folder con caricamento di file (templates) -> createFolder (beLibrary)
-     * con la funzione di callback avviso l'utente sulla esecuzione
-     * 
-     * nel futuro creare una classe Game le cui istanze (games) sono dotate di metodi per gDrive e per dBase
-     * gsGameCreate è la funzione lato be coniugata con questa funzione  */
-    
-        //call conjugate be function
-    google.script.run.withSuccessHandler(onSuccess)
-        .gsGameCreate(gameValues, idGameFolder, idTemplates); 
-        
-        //managing callback function
-    function onSuccess(risultato) {      
-        console.log('questo è il valore ritornato dal BE:  '+risultato); //test
-        alert ('tutto ok'); //user info
-    }  
-}
-
-function folderGameCreate(nomeFolder, oggettoGame){
-    /** -----Obsolete------
-     * @param nomeFolder (str) id del Game Folder da creare
-     * @param oggettoGame (str) oggetto come da nome del Game sul server CMA
-     * 
-    */
-    //init & test
-    console.log('in folder Game create -feAppLogic');           
-    let nomeCompletoFolder=nomeFolder+'_'+oggettoGame;
-    let idGameFolder='1yChSNxEzM-8JqXgTcIOePS1pIcmIDSR7';//hard coded : cartella Games
-    let idControlloProcesso='1YnJ3GQjB5rJoybubGtir6hhERn_96Jw2-mLCkYhFEBE';//hard coded template controlloProcesso
-                                                                            //posto nella cartella Games
-    let idTemplates=[idControlloProcesso];//gsheet (al momento solo un template viene copiato nel nuovo folder)
-    
-    //lancia la funzione fe standard (di libreria) per la creazione di folder con template
-    folderCreate(idGameFolder, nomeCompletoFolder, idTemplates); //la funzione di callback associata visualizza ok per user
-}
-
-function offertaCreate(offertaValues){
-    /**
-     * launch a beFunctions (in beAppLogic) that creates a new offerta record on table 'offerta' and, after,
-     * creates a new folder with templates files inside
-     * 
-     * @param offertaValues (arr) array con i dati della nuova offerta
-     *
-     * i dati da passare al BE per la creazione del folder sono hard coded in questa funzione
-    */
-    
-    //init & test
-    console.log('in folder Game create -feAppLogic');           
-    
-        //setting folder  parameters 
-    let idOffertaFolder='1V3p2aeEq_gKrhxwMmFYOzhqu3wqT46Yy';//hard coded : cartella Offerte
-
-        //setting  templates parameters 
-    let idControlloProcesso='1g0rAy2DQRkCGg9tSXWggqUH73czXYm88dr-KhUICkb0';//hard coded template controlloProcesso
-                                                                            //gSheet posto nella cartella Offerte
-    let idTemplates=[idControlloProcesso];//gsheet (al momento solo un template viene copiato nel nuovo folder)
-    
-    //engine
-    /** lancia la funzione gsOfferteCreate (beAppLogic) che avvia in successione 
-     * due distinte funzioni di libreria: una per la creazione del record-> createRecord (beLibrary) 
-     * e una per la creazione di un folder con caricamento di file (templates) -> createFolder (beLibrary)
-     * con la funzione di callback avviso l'utente sulla esecuzione
-     * 
-     * nel futuro creare una classe Offerte le cui istanze (offerte) sono dotate di metodi per gDrive e per dBase
-     * gsOffertaCreate è la funzione lato be coniugata con questa funzione  */
-    
-        //call conjugate be function
-    google.script.run.withSuccessHandler(onSuccess)
-        .gsOffertaCreate(offertaValues, idOffertaFolder, idTemplates); 
-        
-        //managing callback function
-    function onSuccess(risultato) {      
-        console.log('questo è il valore ritornato dal BE:  '+risultato); //test
-        alert ('tutto ok'); //user info
-    }  
-}
-
-
-
-
-
-
 
 
 

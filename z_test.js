@@ -6,8 +6,70 @@ test2:
 #crea ss+ws e imposta la data corrente nel foglio e nella  casella specificata
 test3:
 #copia ss template e imposta data,  riga di log con data,  responsabile, oggetto 'nome processo apertura';
-
+test4:
+#ottieni url
+test5:
+#porve scrittura su database con campi date
 */
+
+function testdb(){
+  //scrivi campo date su database
+  //connessione al db
+  let dbUrl = 'jdbc:mysql://' + '51.254.206.188' + '/' +'SB_MMazza' ;
+  let conn = Jdbc.getConnection(dbUrl, 'root', 'Bemac999');
+  let table='ACQ_PA';
+  let qry = "INSERT INTO "+table+"(cod, descrizione, note_interne, note_fornitore,fkOperatore, fkRichiedente, start, limite, end,  fkGame, fkOfferta, fkStatoPa) values (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?) "
+
+//  let qry = "INSERT INTO "+table+"(cod, descrizione, note_interne, note_fornitore, "
+//            +"fkOperatore, fkRichiedente, start, limit, end, terminata, fkGame, "
+//            +"fkOfferta, fkLavorazione, fkStatoPa, path) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+
+  let stmt = conn.prepareStatement(qry);
+  
+  //preparo i dati e li metto in un array
+  let cod='21000';
+  let descrizione='test';
+  let note_interne='test';
+  let note_fornitore='test';
+  let fkOperatore='100';
+  let fkRichiedente='100';
+  let start="2020-10-10";
+  let limite="2020-10-10";
+  let end="2020-10-10";
+//  let terminata='1';
+  let fkGame='0';
+  let fkOfferta='0';
+// let fkLavorazione='0';
+  let fkStatoPa='0';
+//  let path='test';
+//  let values=[cod, descrizione, note_interne, note_fornitore,fkOperatore,fkRichiedente,start,limit,end,terminata,fkGame,fkOfferta,fkLavorazione, fkStatoPa,path]
+//  console.log(values);
+ let values=[cod, descrizione, note_interne, note_fornitore, fkOperatore, fkRichiedente,  start, limite, end,  fkGame, fkOfferta, fkStatoPa];
+  
+  stmt.setString(1, values[0]);
+  stmt.setString(2, values[1]);
+  stmt.setString(3, values[2]);
+  stmt.setString(4, values[3]);
+  stmt.setString(5, values[4]);
+  stmt.setString(6, values[5]);
+  stmt.setString(7, values[6]);
+  stmt.setString(8, values[7]);
+  stmt.setString(9, values[8]);
+  stmt.setString(10, values[9]);
+  stmt.setString(11, values[10]);
+ stmt.setString(12, values[11]);
+//  stmt.setString(13, values[12]);
+//  stmt.setString(14, values[13]);
+//  stmt.setString(15, values[14]);
+
+  let results = stmt.execute();//set create op flag
+  console.log(results);
+  console.log('out from  createRecord method');
+}
+
+
+
+
 function test4(){
   //tested: OH
   let codiceGame='27631';

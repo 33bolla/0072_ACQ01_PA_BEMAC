@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    
+    <!-- bootstrap and JQ_UI decorative library -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    
+   
+    <!-- css in external file -->
+    <?!= include ('vPage-css'); ?>
+    
+    <!-- multipage management: setting url for e.parameter obj -->
+    <?var url = getScriptUrl();?>
+  </head>
+  <body>
+    <!-- header  -->
+    <?!= include ('vHeader'); ?> 
+    
+    <h1 class="style1">  NEW PA FORM PAGE   </h1> 
+    <div></div>
+    
+    <!-- page control-->
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <a class="btn btn-primary style2" id='btnBack' href='<?=url?>?page=index' target="_top" role="button">Torna Alla pagina principale</a>
+        </div>
+        <div class="col-sm"> 
+          <button type="button" class="btn btn-success" id="btnLastPa">Ottieni codice PA</button> 
+        </div>
+        <div class="col-sm">
+          <button type="button" class="btn btn-success" id="btnConferma">Conferma Dati Inseriti</button>
+        </div>
+      </div>
+    </div><!-- end container-->
+    <hr>
+    <!-- form creazione record  area  (da ricreare con template comune)-->  
+    <div class="container">
+      <form>      
+        <div class="form-row">
+          <div class="form-group col-md-6">
+              <label for="idPa">Codice PA</label>
+              <input type="text" class="form-control" id="codPa" placeholder="Numero Pa">
+          </div>
+        
+          <div class="form-group col-md-6">
+                  <label for="descrizionePa">Descrizione</label>
+                  <input type="text" class="form-control" id="descrizionePa" placeholder="cliente_destinazione_oggetto">
+          </div>      
+        </div><!--end form row-->
+        
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="noteInternePa">Note Interne</label>
+            <textarea class="form-control" id="noteInternePa" placeholder="noteInternePa" rows="3"></textarea>
+          </div>
+      
+          <div class="form-group col-md-6">
+              <label for="noteFornitorePa">Note per fornitore</label>
+              <textarea class="form-control" id="noteFornitorePa" placeholder="noteFornitorePa" rows="3"></textarea>
+          </div>
+        </div><!--end form row-->
+
+        <div class="form-row">
+          <!-- attiva lettura da tabella!-->
+          <div class="form-group col-md-2">
+            <label for="operatore">Operatore</label>
+            <select id="operatore" name="operatore" placeholder="seleziona operatore">
+                <option value="2150">Filippo Mazzanti</option>
+                <option value="2151">Mara Mazzanti</option>
+                <option value="2140">Manuela Piseddu</option>
+                <option value="322">Marco Bevilacqua</option>
+                <option value="360">Maurizio Mazzanti</option>  
+                <option value="361">Stefano Mazzanti</option>
+            </select>  
+          </div>    
+          
+          <div class="form-group col-md-2">
+            <label for="richiedente">Richiedente</label>
+            <select id="richiedente" name="richiedente" placeholder="seleziona richiedente">
+                <option value="2150">Filippo Mazzanti</option>
+                <option value="2151">Mara Mazzanti</option>
+                <option value="2140">Manuela Piseddu</option>
+                <option value="322">Marco Bevilacqua</option>
+                <option value="360">Maurizio Mazzanti</option>  
+                <option value="361">Stefano Mazzanti</option>
+                <option value="581">Baluganti.P</option>
+                <option value="2153">Baroncelli.M</option>  
+                <option value="2152">Donati.A</option>
+                <option value="585">Fossi.J</option>
+                <option value="583">Innocenti.L</option>
+                <option value="2148">Mazzanti.L</option> 
+                <option value="337">Romanelli.A</option>
+                <option value="617">Tempesti.L</option>
+                <option value="343">Tempesti.M</option>
+                <option value="582">Uniri.B</option>
+                
+                
+            </select>  
+          </div>    
+
+          <div class="form-group col-md-2">
+            <label for="start">Start</label>
+            <input type="text" class="form-control" id="start" placeholder="yyyy-mm-dd">
+          </div>
+          <div class="form-group col-md-2">
+            <label for="limit">Limit</label>
+            <input type="text" class="form-control" id="limite" placeholder="yyyy-mm-dd">
+          </div>
+          <div class="form-group col-md-2">
+            <label for="end">end</label>
+            <input type="text" class="form-control" id="end" placeholder="yyyy-mm-dd">
+          </div>
+          <div class="form-group col-md-2">
+            <label for="terminata">terminata</label>
+            <input type="text" class="form-control" id="terminata" placeholder="terminata=1">
+          </div>
+        </div><!--end form row-->
+        <div class="form-row">
+          <div class="form-group col-md-3">
+              <label for="fkGame">Cod Game</label>
+              <input type="text" class="form-control" id="fkGame" placeholder="Codice Game">
+          </div>
+          <div class="form-group col-md-3">
+            <label for="fkOfferta">Cod Offerta</label>
+            <input type="text" class="form-control" id="fkOfferta" placeholder="Codice Offerta">
+          </div>
+          <div class="form-group col-md-3">
+            <label for="fkLavorazione">Cod Lavorazione</label>
+            <input type="text" class="form-control" id="fkLavorazione" placeholder="Codice Lavorazione">
+          </div>
+
+          <div class="form-group col-md-3">
+              <label for="statoPa">Stato PA</label>
+              <select id="statoPa" name="statoPa" placeholder="Seleziona stato Pa">
+                  <option value="0">Richiesta Offerta</option>
+                  <option value="1">Offerta Ricevuta</option>
+                  <option value="2">Ordine Fornitore</option>
+                  <option value="3">Ddt Fornitore Processo Completato</option>
+                  <option value="3">Fornituranon eseguita Processo Completato</option>
+              </select>  
+          </div>    
+        </div><!--end form row-->
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label for="path">Link PA</label>
+            <input type="text" class="form-control" id="path" placeholder="path">
+          </div>
+        </div><!--end form row-->
+      </form>
+    </div><!-- end container--> 
+    
+    <!-- test area -->
+    <div id='output'> 
+      area di output<br />   
+    </div>
+    
+    <!-- jsSection-->
+    
+    <script src="https://code.jquery.com/jquery-3.4.0.js" integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>    
+    
+    <!-- App Front End JS Library
+      mandatory for all vPages
+    -->
+    <?!= include ('feLibrary');?> 
+    <?!= include ('feAppLogic');?> 
+  
+
+<script>
+console.log('in crea Pa Page');
+
+$(document).ready(function(){
+  /* inserisce la data attuale sui campi date  della form*/
+  //build formDateArray from formDateFields
+  let dateFields=[$("#start"), $("#limite"), $("#end") ];
+  
+  //fill formDateFields with today date
+  let inputDate=setInputFieldsCurrentDate(dateFields);
+  console.log(inputDate);
+  
+
+
+  $("#btnConferma").click(function(){
+    //init,  test & acquisizione dati in input
+    alert('hai confermato i dati. Procedo alla creazione del Game sul Folder e sul database');
+    console.log('lista dati inseriti');
+    let codPa=$("#codPa").val();
+    let descrizionePa=$("#descrizionePa").val();
+    let noteInternePa=$("#noteInternePa").val();
+    let noteFornitorePa=$("#noteFornitorePa").val();
+    let operatore=$("#operatore").val();
+    let richiedente=$("#richiedente").val();
+    let start=$("#start").val();
+    let limite=$("#limite").val();
+    let end=$("#end").val();
+    let terminata=$("#terminata").val();
+    let fkGame=$("#fkGame").val();
+    let fkOfferta=$("#fkOfferta").val();
+    let fkLavorazione=$("#fkLavorazione").val();
+    let statoPa=$("#statoPa").val();
+    let path=$("#path").val();
+    
+    //setting array describing record
+    let paValues=[codPa, descrizionePa,noteInternePa,noteFornitorePa,operatore,richiedente,start,limite,end, terminata, fkGame,fkOfferta,fkLavorazione, statoPa,path];
+
+    /*trick in relazione ai tipi di dati usati predispongo valori di default per i campi interi , nel caso in cui non siano inseriti specifici 
+    dati in fase di creazione del record. I campi numerici interessati (non inizializzati) sono fkGame, fkOfferta, fkLavorazione)
+    */
+    for (i=9; i<13; i++){
+      if (paValues[i]==''){
+        paValues[i]='0';
+      }
+    }   
+    console.log('dati del Pa da creare: '+paValues);
+    
+    //lancia la funzione paCreate (feAppLogic) che gestisce la creazione del record e del folder
+    //la funzione ritorna un messaggio all'utente
+    
+    paCreate(paValues);
+    /*Nota developer: cosa fa la funzione paCreate
+    //lancia con i parametri corretti la funzione beAppLogic che, con due distinte chiamate
+    a funzioni server provvede a:
+    //creare  record su database
+    //creare folder (con caricamento template)sul Drive
+    //la call back function ritorna un messaggio x user
+    */
+ 
+  });
+});
+$( "#btnLastPa" ).click(function() {
+  getPaLastFolderCod();// feAppp: call a server functions: no returns.  
+});
+
+$( "#btnBack" ).click(function() {
+  // not used (using href...)
+  
+});
+
+
+/*developer notes:
+
+toDo
+
+Done
+# solo acquisizione dati in input e lancio feAppLogic function correlata
+
+
+*/
+</script>
+</body>
+</html>
+
+

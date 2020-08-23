@@ -50,14 +50,98 @@ Hanno lo stesso nome ma in BE il nome è preceduto dal prefisso gs
 -assistenza password
 #carica progetto su gitHub + versione GAS***
 
-
 ******************
 ***R01.002
 @Automation:
--(Nuovo PA, Nuovo PR)---
-- feLibrary con funzioni coniugate con funzioni server di libreria ***
-    //folderCreate.html (feLibrary.html)<-> folderCreate.gs (gDriveManager.gs) ***
-- assistenza password (da dbase maosoft) ---
+#assistenza password (da dbase maosoft) ***
+#Modifica form PA*** 
+    //aggiungi button Ottieni Nr Folder***
+#feApp getParFolderData***
+#beDriveManager getFolderList getLastFolderByName***
+#test***
+
+
+
+******************
+***R01.003
+#form paCreate***
+//imposta per default i campi data con la data attuale nel formato yyyy-mm-gg 
+per la compatibilità con db***
+
+#feAppLogic----
+adatta paCreate():****
+*****ATTENZIONE NON USARE LA KEYWORD LIMIT COME NOME DI CAMPO SQL. INCOMPATIBILE ALMENO CON JDBC**********
+verifica il formato per i valori di default dei campi chiave esterna*** (inserimento da maschera:OK; devono essere numerici interi incluso 0 )
+Inserire valori numerici di default per compatibilita con db****
+elimina offertaCreate()**
+test con valori di prova ****
+
+***R01.004
+#carica anche il template di gSheetPa da tenere nel folderPA**
+#gsCreateAppFolder deve tornare gli id del folder e dei files creati***
+#in gsPaCreate cambio il nome del filePA aggiungendo il codice del processo***
+#crea i subfolder PA,RO,OF,OR per la registrazione organica dei documenti***
+#test & gitcon valori di prova***
+
+
+***R01.005
+@vPaListPage
+#modifica la pagina***
+#adatta datatable alla nuova form/tabella database***
+#adatta click su record per avviare vPaUpdatePage ***
+
+@vHeader
+#header: inserisci Jumbotron con altezza adeguata e background color light***
+#css row standard=240px***
+
+@vPaCreatePage
+#crea mail draft per oACQ***
+check su automazione per gSheet Pa***
+#modifica la data del template controllo processo con la data odierna***
+
+test & (git + GAS push)
+
+
+***R01.006
+#rifattorizza e pulisci R01.005---
+@vPaUpdatePage
+#attivare buttons per funzioni base ****
+#nuovi buttons per funzioni specifiche -----
+    //inserisci nuova riga in controllo Processo (no database per ora)
+    //apri gSheet Pa impostando la data e il numero del PA
+    //gSheet Pa con automazione per stampa pdf tramite funzione
+
+    //carica  pdf stampato e ottieni id del pdf stampato
+    //sposta  il pdf RO nel subFolder  RO
+#adatta tutte le funzioni e lascia solo quelle utilizzate.---
+test & (git + GAS push)
+
+
+***R01.007
+#rifattorizza e pulisci R01.006
+# database: tabella fornitori impianti con dati per invio mail RO
+#button per modal seleziona fornitori per invio pdf RO
+#modal selezione fornitori per invio RO
+
+@@@@@@@
+#tabella intermedia per fornitori contattati sulla PA
+@@@@@@@@
+
+#button con Modal (o campo su form) per visualizzazione fornitori contattati
+
+#button per 
+    //invia mail in successione ai fornitori impianti selezionati e pc ad acquisti
+    //invia mail a Mara OAcq per apertura Pa Su Portal ma specificando che
+hai già creato il folder e inviando il relativo link
+
+
+test & (git + GAS push)
+
+
+**********
+
+-adattamento feApp e revisione feLibrary   con funzioni coniugate con funzioni server di libreria ---
+    //paCreate (feLibrary)<-> folderCreate.gs (gDriveManager.gs)     
     //uso e miglioramento (completamento) della classe CRUD**
     //beApplogic: caller function gsArrayReadTable**
     //test per esecuzione qry su tabella password**
@@ -71,8 +155,11 @@ Hanno lo stesso nome ma in BE il nome è preceduto dal prefisso gs
     //gSheet templates controlloProcesso  PA e PR ***
 # carica progetto su gitHub + versione GAS ***
 
-#REL 0.2
+
+
+***REL02.001
 @Automation: Gestione Smart progetti gestiti da Maurizio ---
+#nuova form PR
  
 R02.001---
 #crea user Interface per automazione---
@@ -110,7 +197,7 @@ R02.003
 
 
 
-**************
+
 R02.004   
 #revisione work flow creazione game ****
 
@@ -119,7 +206,7 @@ R02.004
     //pulsanti per attivazione funzioni speciali:
         //apri folder games ***
         //apri file controllo processo **** 
-**************       
+      
 
 #REL03.001
 Gestione Smart Offerte (secondo quanto visto per i Games)
@@ -150,7 +237,13 @@ Gestione template CMA (su local)
 
 
 toDo
+#fix PA number automatic update beAppLogic.js
+let nomeCompletoFolder='PA00'+appValues[0]+'_'+appValues[1];// to improve for automatic PA00xx to PA01xx an so on
+
 #togliere disclaimer google
 #clasp su mc Bemac
 #clasp su winCMA
 #classe game con metodi per database e gDrivße!!
+#nella mail per oACQ dinamizzare i campi responsabile e categoria....
+#attenzione superare il limite di  per PA009999 (routine getFolderUrl)
+#vedi se i messaggi di fine processo sono formattabili per userXp

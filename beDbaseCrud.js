@@ -37,6 +37,7 @@ class Crud {
         this.crudUserName=arrayCrud[2];
         this.crudUserPassword=arrayCrud[3];
         this.crudDatabaseName=arrayCrud[4];  
+        console.log(this.crudServerAddress);
       }
     
       //methods
@@ -52,8 +53,8 @@ class Crud {
         this.conn = Jdbc.getConnection(this.dbUrl, this.crudUserName, this.crudUserPassword);
         this.stmt = this.conn.createStatement(); //oggetto base per settings e interazione con elementi del database 
         
-        // Read up to 1000 rows of data from the table and log them.      
-        this.stmt.setMaxRows(1000); //it can dinamically changed and or done inside the qry  
+        // Read up to 2000 rows of data from the table and log them.      
+        this.stmt.setMaxRows(2000); //it can dinamically changed and or done inside the qry  
         return this.stmt
       }
       setCrudPreparedConnection(){
@@ -74,6 +75,7 @@ class Crud {
          * @param appValues (arr) array con i dati del nuovo record 
          * 
          * i dati per l'accesso al database e alla tabella di lavoro sono hc nella funzione
+         * ***ATTENZIONE non usare la keywor limit (o altre keyword sql come nome dei campi; jdbc segnala errori in maniera non chiara)
         */
         
         console.log('in createRecord'); //test
@@ -82,21 +84,37 @@ class Crud {
         //connessione al database 
         this.dbUrl = 'jdbc:mysql://' + this.crudServerAddress + '/' + this.crudDatabaseName;
         this.conn = Jdbc.getConnection(this.dbUrl, this.crudUserName, this.crudUserPassword);
-        
-        
-        
-        //this.conn=this.setCrudPreparedConnection(); //stmt lo creo di seguito
-        //https://developers.google.com/apps-script/guides/jdbc
-        //vedi write once
         console.log('connessione stabilita');//test
         
-        // qry building
+        //acquisizione tabella db e valori del nuovo record
         this.table=table;
         this.values=appValues;
-        //questa query va parametrizzata o modificata volta per volta....
-        this.qry = "INSERT INTO "+this.table+"( IdGame, nomeBreve, "
-        +"oggetto, note, cliente, stato) values (?, ?, ?, ?, ?, ?)";
-        console.log(this.qry);
+      
+        //switch case to select insert qry related to current db table 
+ 
+        switch (this.table) {
+          case 'ACQ_PA':
+            
+            //questa query va parametrizzata o modificata per ogni singola tabella o Join
+            this.qry = "INSERT INTO "+this.table+"(cod, descrizione, note_interne, note_fornitore, "
+            +"fkOperatore, fkRichiedente, start, limite, end, terminata, fkGame, "
+            +"fkOfferta, fkLavorazione, fkStatoPa, path) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            console.log(this.qry);
+            break;
+          
+          case 'ACQ_PR':
+            // qry building 
+            break;
+          
+          default:
+            console.log("No value found");
+        }       
+        
+        // //questa query va parametrizzata o modificata volta per volta....
+        // this.qry = "INSERT INTO "+this.table+"( IdGame, nomeBreve, "
+        // +"fkOperatore, fkRichiedente, start, limit, end, terminata, fkGame, "
+        // +"fkOfferta,fkLavorazione, fkStatoPa, path) values (?, ?, ?, ?, ?, ?)";
+        // console.log(this.qry);
         //this.conn.prepareStatement(this.qry);  // da capire se 
         //this.stmt=this.conn.prepareStatement(this.qry)    
         this.stmt = this.conn.prepareStatement(this.qry);
@@ -108,6 +126,15 @@ class Crud {
         this.stmt.setString(4, this.values[3]);
         this.stmt.setString(5, this.values[4]);
         this.stmt.setString(6, this.values[5]);
+        this.stmt.setString(7, this.values[6]);
+        this.stmt.setString(8, this.values[7]);
+        this.stmt.setString(9, this.values[8]);
+        this.stmt.setString(10, this.values[9]);
+        this.stmt.setString(11, this.values[10]);
+        this.stmt.setString(12, this.values[11]);
+        this.stmt.setString(13, this.values[12]);
+        this.stmt.setString(14, this.values[13]);
+        this.stmt.setString(15, this.values[14]);
 
         this.results = this.stmt.execute();//set create op flag
         console.log(this.results);
@@ -141,9 +168,11 @@ class Crud {
         // qry and statament  area
         
         //games case
-        if (this.table=='games'){
-          this.qry = "update `cmaTec`.`games` set  IdGame=? , nomeBreve=? , "
-          +"oggetto=? , note=? , cliente=? , stato=? where Id=?";
+        if (this.table=='ACQ_PA'){
+          this.qry = "update `SB_MMazza`.`ACQ_PA` set  cod=? , descrizione=? , "
+          +"note_interne=? , note_fornitore=? , fkOperatore=? , fkRichiedente=? , "
+          +"start=? , limite=? , end=? , terminata=? , fkGame=? , "
+          +"fkOfferta=? , fkLavorazione=? , fkStatoPa=? , path=? where id=?";
           console.log(this.qry);
           this.stmt = this.conn.prepareStatement(this.qry);
           
@@ -153,8 +182,17 @@ class Crud {
           this.stmt.setString(4, this.values[4]);
           this.stmt.setString(5, this.values[5]);
           this.stmt.setString(6, this.values[6]);
+          this.stmt.setString(7, this.values[7]);
+          this.stmt.setString(8, this.values[8]);
+          this.stmt.setString(9, this.values[9]);
+          this.stmt.setString(10, this.values[10]);
+          this.stmt.setString(11, this.values[11]);
+          this.stmt.setString(12, this.values[12]);
+          this.stmt.setString(13, this.values[13]);
+          this.stmt.setString(14, this.values[14]);
+          this.stmt.setString(15, this.values[15]);
 
-          this.stmt.setLong  (7, this.values[0]);
+          this.stmt.setLong  (16, this.values[0]);
         
         }else if (this.table=='offerte') {
           this.qry = "update `cmaTec`.`offerte` set  codOfferta=? , subCodOfferta=? , "
@@ -187,35 +225,35 @@ class Crud {
       }
     
       getArrayDataFromQuery(qry){
-        console.log('in getArrayDataFromQry');
+        console.log('in getArrayDataFromQuery');
         this.stmt=this.setCrudConnection();
         console.log('connessione stabilita');
         //test di accesso alle tabelle del database
         this.qry=qry;
         this.results = this.stmt.executeQuery(this.qry);
+        console.log('lettura dati da esecuzione query '+this.results)
         this.arrMetadata=this.getMetadataFromQry(this.results);
         
         //get table row by row and create a 2D array  
         this.element=''; //generic string 
         this.rsValues=[]; //initializing recordSet 2D array
         while (this.results.next()) {
-          
+          console.log(this.results[0]);
           this.rowData=[]; //initializing rowData for each record of rs.
           //building each rsValues element
           for (this.col = 1; this.col < this.numCols+1; this.col++) {      
-            //console.log(this.col);
+            console.log(this.col);
             this.element=this.results.getString(this.col);
             //console.log(this.element);
             this.rowData.push(this.element); // each value of rowData array is a string!
           }  
           //building dataset as an array 2D (each element of array is an array. -> (ie array of arrays))
           this.rsValues.push(this.rowData);
-    //      Logger.log (rsValues);
+
         }
-    //   var this.arrResults=[this.colNames,this.rsValues]; 
-       return this.rsValues;
-    //   return arrResults;  // se invio questo ho anche i nomi delle colonne (fields names)
-      
+        console.log('exit from getArrayDataFromQuery');
+         return this.rsValues;
+        //   return arrResults;  // se invio questo ho anche i nomi delle colonne (fields names) 
       }
     
       getDataFromQry(qry){
@@ -266,66 +304,6 @@ class Crud {
         return this.arrMetadata     
       }
 
-      createOffertaRecord(table, appValues){
-        /**
-         * create a new record with passed values on specified table
-         * 
-         * @param table (str) tabella sulla quale creare il nuovo record
-         * @param appValues (arr) array con i dati del nuovo record 
-         * 
-         * i dati per l'accesso al database e alla tabella di lavoro sono hc nella funzione
-        */
-        
-        console.log('in createRecord Offerte'); //test
-        console.log ('valori trasmessi '+appValues);//test
-
-        //connessione al database 
-        this.dbUrl = 'jdbc:mysql://' + this.crudServerAddress + '/' + this.crudDatabaseName;
-        this.conn = Jdbc.getConnection(this.dbUrl, this.crudUserName, this.crudUserPassword);
-        console.log('connessione stabilita');//test
-        
-        // qry building
-        this.table=table;
-        this.values=appValues;
-        //questa query va parametrizzata o modificata volta per volta....
-        this.qry = "INSERT INTO "+this.table+"( codOfferta, subCodOfferta, tipoOfferta, nomeBreve, "
-        +"oggetto, note, cliente, stato, link, respOfferta) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        console.log(this.qry);
-        //this.conn.prepareStatement(this.qry);  // da capire se 
-        //this.stmt=this.conn.prepareStatement(this.qry)    
-        this.stmt = this.conn.prepareStatement(this.qry);
-
-
-        this.stmt.setString(1, this.values[0]);
-        this.stmt.setString(2, this.values[1]);
-        this.stmt.setString(3, this.values[2]);
-        this.stmt.setString(4, this.values[3]);
-        this.stmt.setString(5, this.values[4]);
-        this.stmt.setString(6, this.values[5]);
-        this.stmt.setString(7, this.values[6]);
-        this.stmt.setString(8, this.values[7]);
-        this.stmt.setString(9, this.values[8]);
-        this.stmt.setString(10, this.values[9]);
-
-        this.results = this.stmt.execute();//set create op flag
-        console.log(this.results);
-        console.log('out from  createRecord method');
-        return this.results
-        
-        /*developer notes*/
-        /** execute method can be used with any type of SQL statements and it returns a boolean.
-         * A true indicates that the execute method returned a result set object which can be 
-         * retrieved using getResultSet method. false indicates that the query returned an 
-         * int value or void.
-        */
-        //x adesso ritorna false. Non so come ottenere il nr di record inseriti!!
-      }
-
-
-
-
-
-
 
     }//end class wrapper
     
@@ -334,33 +312,7 @@ class Crud {
     
     
     
-    function createNewRecord(values){
-       //form https://developers.google.com/apps-script/guides/jdbc
-      //database connection
-      var arrConnection = openConnection(); //openConnection defined in dBaseManager module. Static database connection  
-      var conn=arrConnection[0];
-      //var stmt=arrConnection[1];   
-      
     
-      var stmt = conn.prepareStatement("INSERT INTO `SB_MMazza`.`AMM_Operations` "
-          + "(`oggetto`, `note`, `inizio`, `termine`, `stato`, `tipologia`, `categoria`, `path`, `fkOperatore`, `fkGame`) "
-          + "values (?,?,?,?,?,?,?,?,?,?)");
-          stmt.setString(1, values[0]);
-          stmt.setString(2, values[1]);
-          stmt.setString(3, values[2]);
-          stmt.setString(4, values[3]);
-          stmt.setString(5, values[4]);
-          stmt.setString(6, values[5]);
-          stmt.setString(7, values[6]);
-          stmt.setString(8, values[7]);
-          stmt.setString(9, values[8]);
-          stmt.setString(10, values[9]);
-          
-          stmt.execute();
-      
-      
-    
-    }
     
     
     
